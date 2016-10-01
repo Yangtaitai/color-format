@@ -11,8 +11,6 @@
      }
 
      document.body.style.backgroundColor = hex; // change background to the hex color  
-     //  document.getElementById("hex-value").style.backgroundColor = hex; // change input
-     //  document.getElementById("rgb-value").style.backgroundColor = hex; //change input
 
      var oct = parseInt(hex, 16); // convert it to 16 radix value
      var r = (oct >> 16) & 255;
@@ -30,4 +28,34 @@
 
      document.getElementById("rgb-value").value =
          'rgb(' + r + ',' + g + ',' + b + ')';
+ }
+
+ //convert rgb to hex
+ function rgbToHeX() {
+     var result = '#';
+     var rgb = document.getElementById("rgb-value").value;
+     var nums = rgb.match(/\d+/g); // get the digits of input
+     if (nums != null && nums.length === 3) {
+         for (var i = 0; i < nums.length; i++) {
+             result += parseDecToHex(parseInt(nums[i]));
+         }
+         document.getElementById('hex-value').value = result;
+         document.body.style.backgroundColor = result;
+     } else {
+         document.getElementById('hex-value').value = '';
+         document.body.style.backgroundColor = "#60aba0";
+     }
+ }
+ // character array for hex
+ var choice = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+
+ /* 
+  *  convert dec to hex
+  *  param: decimal integer
+  *  return: string '00'-'FF'
+  */
+ function parseDecToHex(val) {
+     var first = Math.floor(val / 16);
+     var second = val % 16;
+     return choice[first] + choice[second];
  }
