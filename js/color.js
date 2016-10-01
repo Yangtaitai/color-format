@@ -17,17 +17,20 @@
      var g = (oct >> 8) & 255;
      var b = oct & 255;
 
+     updateInputColor(r, g, b);
+
+     document.getElementById("rgb-value").value = 'rgb(' + r + ',' + g + ',' + b + ')';
+ }
+
+ function updateInputColor(r, g, b) {
      var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // Relative luminance formula
 
-     if (luma < 40) {
-         document.getElementById("hex-value").style.color = 'white';
-         document.getElementById("hex-value").style.borderColor = 'white';
-         document.getElementById("rgb-value").style.color = 'white';
-         document.getElementById("rgb-value").style.borderColor = 'white';
-     }
+     var color = luma < 40 ? 'white' : 'black';
 
-     document.getElementById("rgb-value").value =
-         'rgb(' + r + ',' + g + ',' + b + ')';
+     document.getElementById("hex-value").style.color = color;
+     document.getElementById("hex-value").style.borderColor = color;
+     document.getElementById("rgb-value").style.color = color;
+     document.getElementById("rgb-value").style.borderColor = color;
  }
 
  //convert rgb to hex
@@ -36,16 +39,22 @@
      var rgb = document.getElementById("rgb-value").value;
      var nums = rgb.match(/\d+/g); // get the digits of input
      if (nums != null && nums.length === 3) {
-         for (var i = 0; i < nums.length; i++) {
-             if (parseInt(nums[i]) > 255) {
-                 document.getElementById('hex-value').value = '';
-                 document.body.style.backgroundColor = "#60aba0";
-                 return;
-             }
-             result += parseDecToHex(parseInt(nums[i]));
+         var r = parseInt(nums[0]);
+         var g = parseInt(nums[1]);
+         var b = parseInt(nums[2]);
+
+         if (r > 255 || g > 255 || b > 255) {
+             document.getElementById('hex-value').value = '';
+             document.body.style.backgroundColor = "#60aba0";
+             return;
          }
+         result += parseDecToHex(r) + parseDecToHex(g) + parseDecToHex(b);
+
          document.getElementById('hex-value').value = result;
          document.body.style.backgroundColor = result;
+
+         updateInputColor(r, g, b);
+
      } else {
          document.getElementById('hex-value').value = '';
          document.body.style.backgroundColor = "#60aba0";
