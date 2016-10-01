@@ -37,6 +37,11 @@
      var nums = rgb.match(/\d+/g); // get the digits of input
      if (nums != null && nums.length === 3) {
          for (var i = 0; i < nums.length; i++) {
+             if (parseInt(nums[i]) > 255) {
+                 document.getElementById('hex-value').value = '';
+                 document.body.style.backgroundColor = "#60aba0";
+                 return;
+             }
              result += parseDecToHex(parseInt(nums[i]));
          }
          document.getElementById('hex-value').value = result;
